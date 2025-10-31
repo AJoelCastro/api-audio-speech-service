@@ -78,6 +78,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
+        <dependency>
+            <groupId>dev.onvoid.webrtc</groupId>
+            <artifactId>webrtc-java</artifactId>
+            <version>0.14.0</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
