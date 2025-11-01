@@ -1,5 +1,6 @@
 package com.arturocastro.apiaudiospeechservice.controller;
 
+import com.arturocastro.apiaudiospeechservice.model.ASModel;
 import com.arturocastro.apiaudiospeechservice.service.AudioSpeechService;
 import com.openai.core.http.HttpResponse;
 import com.openai.models.responses.ResponseOutputItem;
@@ -22,8 +23,11 @@ public class AudioSpeechController {
     }
 
     @PostMapping("/session")
-    public ResponseEntity<HttpResponse> createSession(@RequestBody String clientSdp) throws Exception {
-        return ResponseEntity.ok(audioSpeechService.callService(clientSdp));
+    public ResponseEntity<HttpResponse> createSession(@RequestBody ASModel asm) throws Exception {
+        System.out.println(asm);
+        HttpResponse response = audioSpeechService.callService(asm);
+        System.out.println(response);
+        return ResponseEntity.ok(response);
     }
 
 }

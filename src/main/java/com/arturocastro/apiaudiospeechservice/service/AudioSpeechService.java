@@ -1,5 +1,6 @@
 package com.arturocastro.apiaudiospeechservice.service;
 
+import com.arturocastro.apiaudiospeechservice.model.ASModel;
 import com.openai.core.http.HttpResponse;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -35,13 +36,14 @@ public class AudioSpeechService {
 
     }
 
-    public HttpResponse callService (String clientSdp){
+    public HttpResponse callService (ASModel asm){
         // Crear parámetros para Realtime
         SpeechCreateParams speech = SpeechCreateParams.builder()
                 .model(SpeechModel.GPT_4O_MINI_TTS)
-                .input(clientSdp)
+                .input(asm.getInput())
                 .voice(SpeechCreateParams.Voice.ASH)
                 .build();
+        System.out.println(speech);
         return openAIClient.audio().speech().create(speech);
     }
 
