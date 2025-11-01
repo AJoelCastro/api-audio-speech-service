@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.http.HttpClient;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/api/openai/audio-speech")
@@ -22,12 +23,15 @@ public class AudioSpeechController {
         this.audioSpeechService = audioSpeechService;
     }
 
-    @PostMapping("/session")
-    public ResponseEntity<HttpResponse> createSession(@RequestBody ASModel asm) throws Exception {
-        System.out.println(asm);
-        HttpResponse response = audioSpeechService.callService(asm);
-        System.out.println(response);
-        return ResponseEntity.ok(response);
+    @PostMapping("/text-to-audio")
+    public ResponseEntity<byte[]> createSession(@RequestBody ASModel asm) throws Exception {
+        byte[] audioBytes;
+        try (HttpResponse response = audioSpeechService.speechService(asm)) {
+            audioBytes = response.body().readAllBytes();
+        }
+        return ResponseEntity.ok()
+                .header("Content-Type", "audio/mpeg")
+                .body(audioBytes);
     }
 
 }

@@ -36,14 +36,13 @@ public class AudioSpeechService {
 
     }
 
-    public HttpResponse callService (ASModel asm){
-        // Crear parámetros para Realtime
+    public HttpResponse speechService (ASModel asm){
         SpeechCreateParams speech = SpeechCreateParams.builder()
                 .model(SpeechModel.GPT_4O_MINI_TTS)
                 .input(asm.getInput())
-                .voice(SpeechCreateParams.Voice.ASH)
+                .instructions("Eres un buen orador, ten presente tambien el como expresarte de acuerdo al contexto")
+                .voice(SpeechCreateParams.Voice.ALLOY)
                 .build();
-        System.out.println(speech);
         return openAIClient.audio().speech().create(speech);
     }
 
