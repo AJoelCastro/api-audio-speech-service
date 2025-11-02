@@ -1,26 +1,24 @@
 package com.arturocastro.apiaudiospeechservice.service;
 
 import com.arturocastro.apiaudiospeechservice.model.ASModel;
+import com.openai.core.JsonField;
 import com.openai.core.http.HttpResponse;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.core.http.StreamResponse;
 import com.openai.models.audio.speech.SpeechCreateParams;
 import com.openai.models.audio.speech.SpeechModel;
-import com.openai.models.beta.realtime.ResponseAudioTranscriptDoneEvent;
-import com.openai.models.realtime.RealtimeResponse;
-import com.openai.models.realtime.RealtimeResponseCreateParams;
+import com.openai.models.realtime.*;
+import com.openai.models.realtime.calls.CallAcceptParams;
+import com.openai.models.realtime.calls.CallHangupParams;
 import com.openai.models.responses.Response;
-import com.openai.models.responses.ResponseCreateParams;
-import com.openai.models.responses.ResponseOutputAudio;
+import com.openai.services.blocking.realtime.CallService;
 import dev.onvoid.webrtc.*;
-import dev.onvoid.webrtc.media.audio.AudioOptions;
-import dev.onvoid.webrtc.media.audio.AudioTrack;
-import dev.onvoid.webrtc.media.audio.AudioTrackSource;
+import dev.onvoid.webrtc.media.MediaDevices;
+import dev.onvoid.webrtc.media.audio.AudioDevice;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpClient;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,5 +43,6 @@ public class AudioSpeechService {
                 .build();
         return openAIClient.audio().speech().create(speech);
     }
+
 
 }
