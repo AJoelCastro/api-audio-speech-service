@@ -2,6 +2,7 @@ package com.arturocastro.apiaudiospeechservice.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.client.OpenAIClient;
+import com.openai.core.http.Headers;
 import com.openai.models.beta.realtime.sessions.Session;
 import com.openai.models.beta.realtime.sessions.SessionCreateParams;
 import org.springframework.stereotype.Component;
@@ -41,16 +42,32 @@ public class RealtimeWebSocketHandler implements WebSocketHandler {
                 openAISessions.put(clientSession.getId(), session);
 
                 SessionCreateParams sessionCreateParams = SessionCreateParams.builder()
-                                .clientSecret(SessionCreateParams.ClientSecret.builder()
-                                        .expiresAfter(SessionCreateParams.ClientSecret.ExpiresAfter.builder()
-                                                .anchor(SessionCreateParams.ClientSecret.ExpiresAfter.Anchor.CREATED_AT)
-                                                .seconds(20)
-                                                .build()
-                                        )
+                        .model(SessionCreateParams.Model.GPT_4O_MINI_REALTIME_PREVIEW)
+                        .inputAudioFormat(SessionCreateParams.InputAudioFormat.PCM16)
+                        .outputAudioFormat(SessionCreateParams.OutputAudioFormat.PCM16)
+                        .additionalHeaders(
+                                Headers.builder()
+                                        .put("OpenAI-Beta", "realtime=v1")
+                                        .put("Authorization", "Bearer " + apiKey)
+                                        .build()
+                        )
+                        .addModality(SessionCreateParams.Modality.AUDIO)
+                        .inputAudioNoiseReduction(
+                                SessionCreateParams.InputAudioNoiseReduction.builder()
+                                        .type(SessionCreateParams.InputAudioNoiseReduction.Type.FAR_FIELD)
+                                        .build()
+                        )
+                        .clientSecret(SessionCreateParams.ClientSecret.builder()
+                                .expiresAfter(SessionCreateParams.ClientSecret.ExpiresAfter.builder()
+                                        .anchor(SessionCreateParams.ClientSecret.ExpiresAfter.Anchor.CREATED_AT)
+                                        .seconds(20)
                                         .build()
                                 )
-                                .build();
-                System.out.println("sessionCreateParams: " + sessionCreateParams);
+                                .additionalProperties(new ConcurrentHashMap<>())
+                                .build()
+                        )
+                        .build();
+                System.out.println("sessionCreateParams: " + sessionCreateParams.clientSecret().get());
                 session.sendMessage(new TextMessage(objectMapper.writeValueAsString(sessionCreateParams)));
             }
 
