@@ -2,6 +2,8 @@ package com.arturocastro.apiaudiospeechservice.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.client.OpenAIClient;
+import com.openai.models.beta.realtime.sessions.Session;
+import com.openai.models.beta.realtime.sessions.SessionCreateParams;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
@@ -31,35 +33,25 @@ public class RealtimeWebSocketHandler implements WebSocketHandler {
         // Conectar a OpenAI Realtime API
         StandardWebSocketClient client = new StandardWebSocketClient();
 
+
         WebSocketHandler openAIHandler = new WebSocketHandler() {
             @Override
             public void afterConnectionEstablished(WebSocketSession session) throws Exception {
                 System.out.println("Conectado a OpenAI Realtime");
                 openAISessions.put(clientSession.getId(), session);
 
-                // Enviar configuración inicial de la sesión
-                String sessionConfig = """
-                {
-                    "type": "session.update",
-                    "session": {
-                        "modalities": ["text", "audio"],
-                        "instructions": "Eres un asistente útil que habla español",
-                        "voice": "alloy",
-                        "input_audio_format": "pcm16",
-                        "output_audio_format": "pcm16",
-                        "input_audio_transcription": {
-                            "model": "whisper-1"
-                        },
-                        "turn_detection": {
-                            "type": "server_vad",
-                            "threshold": 0.5,
-                            "prefix_padding_ms": 300,
-                            "silence_duration_ms": 500
-                        }
-                    }
-                }
-                """;
-                session.sendMessage(new TextMessage(sessionConfig));
+                SessionCreateParams sessionCreateParams = SessionCreateParams.builder()
+                                .clientSecret(SessionCreateParams.ClientSecret.builder()
+                                        .expiresAfter(SessionCreateParams.ClientSecret.ExpiresAfter.builder()
+                                                .anchor(SessionCreateParams.ClientSecret.ExpiresAfter.Anchor.CREATED_AT)
+                                                .seconds(20)
+                                                .build()
+                                        )
+                                        .build()
+                                )
+                                .build();
+                System.out.println("sessionCreateParams: " + sessionCreateParams);
+                session.sendMessage(new TextMessage(objectMapper.writeValueAsString(sessionCreateParams)));
             }
 
             @Override
