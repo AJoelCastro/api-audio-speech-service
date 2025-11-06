@@ -5,11 +5,11 @@ import com.arturocastro.apiaudiospeechservice.service.AudioSpeechService;
 import com.openai.core.http.HttpResponse;
 import com.openai.core.http.StreamResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
+//Comentar esto para cuando este usando microservicios y descomentar el aplication.properties
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/openai/audio-speech")
 public class AudioSpeechController {
@@ -29,6 +29,16 @@ public class AudioSpeechController {
         return ResponseEntity.ok()
                 .header("Content-Type", "audio/mpeg")
                 .body(audioBytes);
+    }
+
+    @PostMapping("/session")
+    public Mono<ResponseEntity<String>> getSession() {
+        return audioSpeechService.createSession()
+                .map(ResponseEntity::ok)
+                .onErrorResume(e ->
+                        Mono.just(ResponseEntity.status(500)
+                                .body("Error al crear la sesión: " + e.getMessage()))
+                );
     }
 
 }
