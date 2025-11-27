@@ -11,6 +11,7 @@ import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
 import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
 import com.openai.models.audio.transcriptions.TranscriptionInclude;
 import com.openai.models.realtime.*;
+import com.openai.models.responses.ResponseComputerToolCall;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputAudio;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,9 +59,8 @@ public class AudioSpeechService {
                         TranscriptionInclude.LOGPROBS
                 )
                 .file(
-                        Path.of("https://www.youtube.com/watch?v=6NI36Z7oku0&list=RDBOjuWPlkGKk&index=5")
+                        Path.of("D:/spring_boot/Cholo Soy.mp3")
                 )
-                .language("es-ES")
                 .build();
         return openAIClient.audio().transcriptions().create(transcriptionCreateParams);
     }
