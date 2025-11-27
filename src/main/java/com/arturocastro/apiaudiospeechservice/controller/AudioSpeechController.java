@@ -30,6 +30,12 @@ public class AudioSpeechController {
                 .body(audioBytes);
     }
 
+    @PostMapping("/audio-to-text")
+    public ResponseEntity<HttpResponse> textService(@RequestBody byte[] audioBytes) throws Exception {
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/session")
     public Mono<ResponseEntity<String>> getSession() {
         return audioSpeechService.createSession()

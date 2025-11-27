@@ -44,6 +44,10 @@ public class AudioSpeechService {
         return openAIClient.audio().speech().create(speech);
     }
 
+    public HttpResponse textService(ASModel asm){
+        return null;
+    }
+
     public Mono<String> createSession(){
         Map<String, Object> body = new HashMap<>();
         body.put("model", "gpt-realtime");
