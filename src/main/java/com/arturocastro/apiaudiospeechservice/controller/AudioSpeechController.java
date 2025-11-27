@@ -8,8 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-//Comentar esto para cuando este usando microservicios y descomentar el pom.xml
-@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("/api/openai/audio-speech")
 public class AudioSpeechController {
