@@ -71,7 +71,7 @@
         <dependency>
             <groupId>com.openai</groupId>
             <artifactId>openai-java-spring-boot-starter</artifactId>
-            <version>4.3.0</version>
+            <version>4.8.0</version>
         </dependency>
         <dependency> <!-- Jackson 3.x -->
             <groupId>tools.jackson.core</groupId>
