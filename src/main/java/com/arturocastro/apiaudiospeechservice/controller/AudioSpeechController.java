@@ -4,6 +4,7 @@ import com.arturocastro.apiaudiospeechservice.model.ASModel;
 import com.arturocastro.apiaudiospeechservice.service.AudioSpeechService;
 import com.openai.core.http.HttpResponse;
 import com.openai.core.http.StreamResponse;
+import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -31,9 +32,9 @@ public class AudioSpeechController {
     }
 
     @PostMapping("/audio-to-text")
-    public ResponseEntity<HttpResponse> textService(@RequestBody byte[] audioBytes) throws Exception {
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<TranscriptionCreateResponse> textService(@RequestBody byte[] audioBytes) throws Exception {
+        TranscriptionCreateResponse response = audioSpeechService.textService(audioBytes);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/session")

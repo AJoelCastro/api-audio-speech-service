@@ -4,15 +4,22 @@ import com.arturocastro.apiaudiospeechservice.model.ASModel;
 import com.openai.core.http.HttpResponse;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.audio.AudioModel;
 import com.openai.models.audio.speech.SpeechCreateParams;
 import com.openai.models.audio.speech.SpeechModel;
+import com.openai.models.audio.transcriptions.TranscriptionCreateParams;
+import com.openai.models.audio.transcriptions.TranscriptionCreateResponse;
+import com.openai.models.audio.transcriptions.TranscriptionInclude;
 import com.openai.models.realtime.*;
+import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseInputAudio;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,8 +51,18 @@ public class AudioSpeechService {
         return openAIClient.audio().speech().create(speech);
     }
 
-    public HttpResponse textService(ASModel asm){
-        return null;
+    public TranscriptionCreateResponse textService(byte[] audioBytes){
+        TranscriptionCreateParams transcriptionCreateParams = TranscriptionCreateParams.builder()
+                .model(AudioModel.GPT_4O_TRANSCRIBE)
+                .addInclude(
+                        TranscriptionInclude.LOGPROBS
+                )
+                .file(
+                        Path.of("https://www.youtube.com/watch?v=6NI36Z7oku0&list=RDBOjuWPlkGKk&index=5")
+                )
+                .language("es-ES")
+                .build();
+        return openAIClient.audio().transcriptions().create(transcriptionCreateParams);
     }
 
     public Mono<String> createSession(){
