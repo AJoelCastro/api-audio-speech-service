@@ -52,14 +52,14 @@ public class AudioSpeechService {
         return openAIClient.audio().speech().create(speech);
     }
 
-    public TranscriptionCreateResponse textService(byte[] audioBytes){
+    public TranscriptionCreateResponse textServiceWithRoute(ASModel asm){
         TranscriptionCreateParams transcriptionCreateParams = TranscriptionCreateParams.builder()
                 .model(AudioModel.GPT_4O_TRANSCRIBE)
                 .addInclude(
                         TranscriptionInclude.LOGPROBS
                 )
                 .file(
-                        Path.of("D:/spring_boot/Cholo Soy.mp3")
+                        Path.of(asm.getPath())
                 )
                 .build();
         return openAIClient.audio().transcriptions().create(transcriptionCreateParams);

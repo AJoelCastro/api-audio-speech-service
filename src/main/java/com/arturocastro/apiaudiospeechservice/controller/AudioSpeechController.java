@@ -32,8 +32,8 @@ public class AudioSpeechController {
     }
 
     @PostMapping("/audio-to-text")
-    public ResponseEntity<TranscriptionCreateResponse> textService(@RequestBody byte[] audioBytes) throws Exception {
-        TranscriptionCreateResponse response = audioSpeechService.textService(audioBytes);
+    public ResponseEntity<TranscriptionCreateResponse> textServiceWithRoute(@RequestBody ASModel asm) throws Exception {
+        TranscriptionCreateResponse response = audioSpeechService.textServiceWithRoute(asm);
         return ResponseEntity.ok(response);
     }
 
