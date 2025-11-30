@@ -65,6 +65,11 @@ public class AudioSpeechService {
         return openAIClient.audio().transcriptions().create(transcriptionCreateParams);
     }
 
+    public TranscriptionCreateResponse textServiceWithBytes(){
+
+        return openAIClient.audio().transcriptions().create();
+    }
+
     public Mono<String> createSession(){
         Map<String, Object> body = new HashMap<>();
         body.put("model", "gpt-realtime");
