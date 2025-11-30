@@ -39,7 +39,8 @@ public class AudioSpeechController {
 
     @PostMapping("/audio-to-text-bytes")
     public ResponseEntity<TranscriptionCreateResponse> textServiceWithBytes(@RequestBody ASModel asm) throws Exception {
-
+        TranscriptionCreateResponse response = audioSpeechService.textServiceWithBytes(asm);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/session")
