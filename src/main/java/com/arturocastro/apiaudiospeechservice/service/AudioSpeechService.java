@@ -65,9 +65,17 @@ public class AudioSpeechService {
         return openAIClient.audio().transcriptions().create(transcriptionCreateParams);
     }
 
-    public TranscriptionCreateResponse textServiceWithBytes(){
-
-        return openAIClient.audio().transcriptions().create();
+    public TranscriptionCreateResponse textServiceWithBytes(ASModel asm){
+        TranscriptionCreateParams transcriptionCreateParams = TranscriptionCreateParams.builder()
+                .model(AudioModel.GPT_4O_TRANSCRIBE)
+                .addInclude(
+                        TranscriptionInclude.LOGPROBS
+                )
+                .file(
+                        asm.getAudioBytes()
+                )
+                .build();
+        return openAIClient.audio().transcriptions().create(transcriptionCreateParams);
     }
 
     public Mono<String> createSession(){

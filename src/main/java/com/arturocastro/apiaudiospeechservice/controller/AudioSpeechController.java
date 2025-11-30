@@ -31,10 +31,15 @@ public class AudioSpeechController {
                 .body(audioBytes);
     }
 
-    @PostMapping("/audio-to-text")
+    @PostMapping("/audio-to-text-path")
     public ResponseEntity<TranscriptionCreateResponse> textServiceWithRoute(@RequestBody ASModel asm) throws Exception {
         TranscriptionCreateResponse response = audioSpeechService.textServiceWithRoute(asm);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/audio-to-text-bytes")
+    public ResponseEntity<TranscriptionCreateResponse> textServiceWithBytes(@RequestBody ASModel asm) throws Exception {
+
     }
 
     @PostMapping("/session")
