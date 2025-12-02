@@ -68,9 +68,6 @@ public class AudioSpeechService {
     public TranscriptionCreateResponse textServiceWithBytes(ASModel asm){
         TranscriptionCreateParams transcriptionCreateParams = TranscriptionCreateParams.builder()
                 .model(AudioModel.GPT_4O_TRANSCRIBE)
-                .addInclude(
-                        TranscriptionInclude.LOGPROBS
-                )
                 .file(
                         asm.getAudioBytes()
                 )
